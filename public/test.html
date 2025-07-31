@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pathora Backend Test</title>
+</head>
+<body>
+  <h2>Test Pathora Backend</h2>
+  <label>Prompt:</label>
+  <input type="text" id="prompt" placeholder="e.g. vegan cafes by the river" size="50" />
+  <br /><br />
+  <label>City:</label>
+  <input type="text" id="city" placeholder="e.g. Lima" />
+  <br /><br />
+  <label>Duration (hours):</label>
+  <input type="number" id="duration" value="2" />
+  <br /><br />
+  <button onclick="testBackend()">Send</button>
+
+  <pre id="output" style="white-space: pre-wrap; margin-top: 20px;"></pre>
+
+  <script>
+    async function testBackend() {
+      const prompt = document.getElementById("prompt").value;
+      const city = document.getElementById("city").value;
+      const duration = parseInt(document.getElementById("duration").value);
+
+      document.getElementById("output").innerText = "⏳ Sending request...";
+
+      try {
+        const res = await fetch("https://pathora-backend.onrender.com/plan-tour", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            prompt: prompt,
+            location: city,
+            duration: duration,
+            filters: []
+          })
+        });
+
+        const data = await res.json();
+        document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById("output").innerText = "❌ Error:\n" + err;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pathora - Plan Your Tour</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+  <script>
+    function toggleMenu() {
+      const dropdown = document.getElementById("menuDropdown");
+      dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: #f8f9fa; color: #40403E; }
+    nav { position: relative; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background-color: #f8f9fa; }
+    .hamburger { font-size: 1.5rem; cursor: pointer; }
+    .logo { flex-grow: 1; text-align: center; font-size: 1.2rem; font-weight: 500; }
+    .dropdown { display: none; position: absolute; left: 1rem; top: 4rem; background-color: #ffffff; border-radius: 5px; z-index: 1000; padding: 0.75rem 1rem; box-shadow: 0 4px 8px rgba(0,0,0,0.15); min-width: 160px; }
+    .dropdown a { display: block; padding: 0.5rem 1rem; color: #40403E; text-decoration: none; }
+    .dropdown a:hover { background-color: #f8f9fa; }
+    .container { max-width: 800px; margin: 0 auto; padding: 2rem; text-align: center; }
+    .filters { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; max-width: 600px; margin: 1rem auto; text-align: left; }
+    .filters > label { flex: 1 1 150px; }
+    textarea#searchInput { width: 100%; padding: 1rem; font-size: 1rem; border-radius: 8px; border: 1px solid #ccc; resize: vertical; margin: 0.5rem 0; height: 120px; box-sizing: border-box; overflow-y: auto; }
+    input[type="text"], input[type="range"] { width: 100%; padding: 0.75rem; border-radius: 5px; border: 1px solid #ccc; font-size: 1rem; margin-bottom: 0.5rem; }
+    label[for="timeRange"] { display: block; margin-top: 1rem; font-weight: 600; }
+    button { background-color: #D86224; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 5px; font-size: 1rem; margin-top: 1rem; cursor: pointer; }
+    button:hover { background-color: #AE431E; transform: scale(1.02); }
+    .card { background-color: #fff; border-radius: 10px; padding: 1rem; margin-top: 2rem; text-align: left; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+    <div class="logo">Pathora</div>
+    <div class="dropdown" id="menuDropdown">
+      <a href="home.html">🏠 Home</a>
+      <a href="saved.html">🔖 My Tours</a>
+      <a href="profile.html">👤 My Profile</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h1>Plan Your Personalized Tour</h1>
+    <form id="searchForm">
+      <textarea id="searchInput" placeholder="What are you in the mood for? (e.g., vegan cafes near nature, 2h walk)" required></textarea>
+      <input type="text" id="cityInput" placeholder="Enter city (e.g., São Paulo)" required />
+      <div class="filters">
+        <label><input type="checkbox" name="petFriendly" /> 🐶 Pet-friendly</label>
+        <label><input type="checkbox" name="outdoor" /> 🌳 Outdoor</label>
+        <label><input type="checkbox" name="cultural" /> 🖼️ Cultural</label>
+        <label><input type="checkbox" name="vegan" /> 🥗 Vegan</label>
+        <label><input type="checkbox" name="coffee" /> ☕ Coffee</label>
+        <label><input type="checkbox" name="free" /> 💸 Free</label>
+        <label><input type="checkbox" name="paid" /> 💰 Paid</label>
+      </div>
+      <label for="timeRange">Tour Duration (hours): <span id="timeLabel">1</span></label>
+      <input type="range" id="timeRange" name="time" min="1" max="8" value="1" />
+      <button type="submit">🔍 Search</button>
+    </form>
+
+    <div id="results" class="card"></div>
+    <button id="saveBtn" style="display:none; margin-top: 1rem;">💾 Save this Tour</button>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPtxY2oJ3Hno3DHt3sPYHQswzSi9pTDdU&libraries=places"></script>
+  <script>
+    function initAutocomplete() {
+      const input = document.getElementById('cityInput');
+      const autocomplete = new google.maps.places.Autocomplete(input, { types: ['(cities)'] });
+    }
+    window.onload = initAutocomplete;
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const range = document.getElementById("timeRange");
+      const label = document.getElementById("timeLabel");
+      if (range && label) {
+        range.addEventListener("input", () => {
+          label.textContent = range.value;
+        });
+      }
+    });
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyB2FU7yykGGZqEAnBORmTlgAMRHXGda1dc",
+      authDomain: "pathora-f706b.firebaseapp.com",
+      projectId: "pathora-f706b",
+      storageBucket: "pathora-f706b.appspot.com",
+      messagingSenderId: "1027650639715",
+      appId: "1:1027650639715:web:30b9e441baee2f52022556"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    let currentUser = null;
+
+    auth.onAuthStateChanged(user => {
+      currentUser = user;
+      if (user) console.log("🔐 Logged in as", user.displayName);
+    });
+
+    const form = document.getElementById("searchForm");
+    const input = document.getElementById("searchInput");
+    const cityInput = document.getElementById("cityInput");
+    const timeRange = document.getElementById("timeRange");
+    const results = document.getElementById("results");
+    const saveBtn = document.getElementById("saveBtn");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const filters = {
+        prompt: input.value.trim(),
+        location: cityInput.value.trim(),
+        duration: parseInt(timeRange.value),
+        filters: [
+          ...(form.petFriendly.checked ? ["pet_friendly"] : []),
+          ...(form.outdoor.checked ? ["outdoor"] : []),
+          ...(form.cultural.checked ? ["cultural"] : []),
+          ...(form.vegan.checked ? ["vegan"] : []),
+          ...(form.coffee.checked ? ["coffee"] : []),
+          ...(form.free.checked ? ["free"] : []),
+          ...(form.paid.checked ? ["paid"] : [])
+        ]
+      };
+
+      results.innerHTML = "⏳ Generating your tour plan...";
+      try {
+        const response = await fetch("https://pathora-backend.onrender.com/plan-tour", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(filters),
+        });
+        const data = await response.json();
+        const renderer = new marked.Renderer();
+        renderer.link = function(href, title, text) {
+          return `<a href="${href}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+        };
+        results.innerHTML = marked.parse(data.tourPlan || "No tour generated.", { renderer });
+
+        saveBtn.style.display = "inline-block";
+        saveBtn.dataset.tour = data.tourPlan;
+      } catch (err) {
+        results.innerHTML = "⚠️ Error generating tour.";
+        console.error(err);
+      }
+    });
+
+    saveBtn.addEventListener("click", async () => {
+      if (!currentUser) {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        try {
+          const result = await auth.signInWithPopup(provider);
+          currentUser = result.user;
+        } catch (err) {
+          alert("Authentication failed.");
+          return;
+        }
+      }
+
+      const tourContent = saveBtn.dataset.tour;
+      if (tourContent) {
+        const userToursRef = db.collection("users").doc(currentUser.uid).collection("tours");
+        await userToursRef.add({
+          content: tourContent,
+          createdAt: new Date()
+        });
+        alert("✅ Tour saved to your profile!");
+      }
+    });
+  </script>
+</body>
+</html>

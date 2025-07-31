@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pathora - Profile</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script type="text/javascript">
+    function toggleMenu() {
+      const dropdown = document.getElementById("menuDropdown");
+      dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+    }
+  </script>  
+  <style>
+    .dropdown {
+      display: none;
+      position: absolute;
+      left: 1rem;
+      top: 4rem;
+      background-color: #ffffff;
+      border-radius: 5px;
+      z-index: 1000;
+      padding: 0.75rem 1rem; 
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      min-width: 160px;
+    }
+    .dropdown a {
+      display: block;
+      padding: 0.5rem 1rem;
+      color: #40403E;
+      text-decoration: none;
+    }
+    .dropdown a:hover {
+      background-color: #f8f9fa;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+    <div class="logo">Pathora</div>
+    <div class="dropdown" id="menuDropdown">
+      <a href="home.html">🏠 Home</a>
+      <a href="saved.html">🔖 My Tours</a>
+      <a href="profile.html">👤 My Profile</a>
+    </div>
+  </nav>
+
+  <div class="profile-box">
+    <h1 id="welcome">Welcome, guest</h1>
+    <button id="connectGoogle">Connect with Google</button>
+  </div>
+
+  <script type="module">
+    import { loginWithGoogle, auth } from '/js/firebase.js';
+    import {
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
+
+    const btn = document.getElementById("connectGoogle");
+    const welcome = document.getElementById("welcome");
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        welcome.textContent = `Welcome, ${user.displayName}`;
+        btn.textContent = "Log out";
+
+        btn.onclick = async () => {
+          await signOut(auth);
+          welcome.textContent = "Welcome, guest";
+          btn.textContent = "Connect with Google";
+        };
+      } else {
+        welcome.textContent = "Welcome, guest";
+        btn.textContent = "Connect with Google";
+
+        btn.onclick = async () => {
+          const user = await loginWithGoogle();
+          if (user) {
+            welcome.textContent = `Welcome, ${user.displayName}`;
+            btn.textContent = "Log out";
+          }
+        };
+      }
+});
+  </script>
+</body>
+</html>

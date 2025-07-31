@@ -1,0 +1,293 @@
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+h1 {
+  color: #8A8B25; /* Olive */;
+}
+
+/* Página de bienvenida */
+.hero {
+  text-align: center;
+  padding: 20vh 2rem 0;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  color: #8A8B25; /* Olive */
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.btn {
+  margin-top: 1.5rem;
+  padding: 0.8rem 1.5rem;
+  background: #D86224; /* Terracota */
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn:hover {
+  background: #AE431E; /* Chile Rojo */
+  transform: translateY(-2px);
+}
+
+/* Navegación */
+nav {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #f8f9fa;
+}
+
+.logo {
+  order: 2;
+  flex-grow: 1;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.hamburger {
+  font-size: 1.5rem;
+  cursor: pointer;
+  order: 1;
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  left: 1rem;
+  top: 4rem;
+  background-color: #ffffff;
+  border-radius: 5px;
+  z-index: 1000;
+  padding: 0.75rem 1rem; 
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  min-width: 160px;
+}
+.dropdown a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: #40403E;
+  text-decoration: none;
+}
+.dropdown a:hover {
+  background-color: #f8f9fa;
+}
+
+/* Buscador */
+.search-box {
+  max-width: 600px;
+  margin: 2rem auto;
+  background: #EACB91; /* Sunset */
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.search-box h2 {
+  margin-top: 0;
+  color: #8A8B25;
+}
+
+.search-box input[type="text"] {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  box-sizing: border-box;
+}
+
+.search-box input[type="number"] {
+  width: 100%;
+  padding: 0.8rem;
+  margin: 0.5rem 0 1rem 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-box input[type="text"]:focus,
+.search-box input[type="number"]:focus {
+  border-color: #D86224;
+  box-shadow: 0 0 0 3px rgba(216, 98, 36, 0.2);
+  outline: none;
+}
+
+/* Filtros */
+.filters label {
+  display: block;
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+  color: #AE431E;
+}
+
+/* Botones */
+button {
+  padding: 0.8rem 1.2rem;
+  background-color: #D86224;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+  background-color: #AE431E;
+  transform: scale(1.02);
+}
+
+/* Mapa */
+#map {
+  height: 400px;
+  width: 100%;
+  margin-top: 2rem;
+  border-radius: 12px;
+  border: 3px solid #8A8B25;
+  box-shadow: 0 4px 12px rgba(138, 139, 37, 0.15);
+}
+
+/* Perfil */
+.profile-box {
+  max-width: 500px;
+  margin: 3rem auto;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.profile-box h3 {
+  color: #AE431E;
+}
+
+/* Enlaces */
+a {
+  color: #8A8B25;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+a:hover {
+  color: #D86224;
+  text-decoration: underline;
+}
+
+/* Utilidades */
+.hidden {
+  display: none;
+}
+
+textarea#searchInput {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  resize: vertical;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+  vertical-align: top; 
+  height: 120px; 
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+.filters {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.filters > div {
+  flex: 1 1 30%;
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  left: 1rem;
+  top: 4rem;
+  background-color: #BFBFBD;
+  border-radius: 5px;
+  z-index: 1000;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15); 
+  min-width: 160px; 
+}
+
+.dropdown a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: #40403E;
+  text-decoration: none;
+  text-align: left; 
+}
+
+#cityInput {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 600px) {
+  .search-box,
+  .profile-box {
+    padding: 1.2rem;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filters > div {
+    width: 100%;
+  }
+  textarea#searchInput,
+  input[type="text"] {
+    font-size: 0.95rem;
+    padding: 0.8rem;
+  }
+
+  button {
+    width: 100%;
+  }
+}
