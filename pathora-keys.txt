@@ -1,2 +1,0 @@
-export GOOGLE_API_KEY="AIzaSyAPtxY2oJ3Hno3DHt3sPYHQswzSi9pTDdU"
-export OPENAI_API_KEY="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"
